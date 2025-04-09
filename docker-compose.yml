@@ -15,7 +15,6 @@ services:
       - REDIS_PASSWORD=
     volumes:
       - ./.env:/app/.env:ro
-      - ./firebase-credentials.json:/app/firebase-credentials.json:ro
       - ./secrets.json:/app/secrets.json:ro
     depends_on:
       - redis

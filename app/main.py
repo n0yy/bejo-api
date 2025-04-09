@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth import router as auth_router
 from app.ai import router as ai_router
-import os
 from dotenv import load_dotenv
 
 # Load environment variables

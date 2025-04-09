@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from app.auth.models import TokenData
 from app.auth.database import get_user_by_email
+from app.auth.redis import get_user_from_cache
 import os
 from dotenv import load_dotenv
 
@@ -14,7 +15,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 # OAuth2 scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -33,7 +34,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
 
-    user = get_user_by_email(token_data.email)
+    # Try to get user from cache first
+    user = get_user_from_cache(token_data.email)
+
+    # If not in cache, get from Firestore
+    if not user:
+        user = get_user_by_email(token_data.email)
+
     if user is None:
         raise credentials_exception
 

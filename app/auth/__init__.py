@@ -4,7 +4,7 @@ from app.auth.login import router as login_router
 from app.auth.dependencies import get_current_user
 
 # Create main auth router
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(prefix="/api", tags=["Authentication"])
 
 # Include all auth routes
 router.include_router(register_router)
