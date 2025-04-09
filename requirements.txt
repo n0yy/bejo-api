@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pinecone-client
+google-generativeai
+python-dotenv
+pydantic
+langchain
+langchain-google-genai
+langchain-pinecone
+redis
+firebase-admin
+passlib
+python-jose
+python-multipart
+pydantic[email]

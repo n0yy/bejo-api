@@ -1,0 +1,53 @@
+# Direktori virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# File lingkungan dan kredensial
+.env
+*.pem
+*.key
+*.json
+
+# File sistem
+.git/
+.github/
+.gitignore
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.DS_Store
+**/Thumbs.db
+
+# File log dan cache
+*.log
+logs/
+log/
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# File dokumentasi dan pengembangan
+README.md
+LICENSE
+CHANGELOG.md
+docs/
+tests/
+test/
+examples/
+.mypy_cache/
+.vscode/
+.idea/
+
+# File Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# File temporary
+tmp/
+temp/
+*.swp
+*.swo 
