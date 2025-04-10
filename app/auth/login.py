@@ -26,7 +26,6 @@ async def login(form_data: EmailPasswordRequestForm):
         user = get_user_by_email(form_data.email)
         if user:
             # Cache the user data
-            print(f"From login.py : {user}")
             set_user_in_cache(form_data.email, user)
 
     if not user:

@@ -14,6 +14,15 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdate(BaseModel):
+    email: Optional[str] = None
+    name: Optional[str] = None
+    division: Optional[str] = None
+    whatsappNumber: Optional[str] = None
+    status: Optional[str] = None
+    role: Optional[str] = None
+
+
 class User(UserBase):
     id: str
     created_at: str

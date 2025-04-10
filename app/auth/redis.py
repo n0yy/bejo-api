@@ -23,7 +23,8 @@ def get_user_from_cache(email: str):
     return None
 
 
-def set_user_in_cache(email: str, user_data: dict, expire: int = 3600):
+# For development set 10 and for deploymend i will set 3600
+def set_user_in_cache(email: str, user_data: dict, expire: int = 10):
     """Set user in Redis cache"""
     redis_client.setex(f"user:{email}", expire, json.dumps(user_data))
 
