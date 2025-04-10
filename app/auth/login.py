@@ -23,7 +23,6 @@ async def login(form_data: EmailPasswordRequestForm):
     # If not in cache, get from Firestore
     if not user:
         user = get_user_by_email(form_data.email)
-        print(f"id user: {user['id']}")
 
         if user:
             # Cache the user data
@@ -39,7 +38,7 @@ async def login(form_data: EmailPasswordRequestForm):
     if user["status"] == "pending":
         raise HTTPException(
             status_code=403,
-            detail="Pendaftaran anda sedang di tinjau, mohon tunggu minimal 1 jam.",
+            detail="Pendaftaran Anda sedang di tinjau, mohon tunggu minimal 1 jam.",
         )
     elif user["status"] == "rejected":
         raise HTTPException(
@@ -55,4 +54,4 @@ async def login(form_data: EmailPasswordRequestForm):
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
 
-    return {"access_token": access_token, "token_type": "bearer", "id": user["id"]}
+    return {"access_token": access_token, "token_type": "bearer"}
