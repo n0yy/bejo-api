@@ -10,14 +10,20 @@ db = firestore.client()
 users_collection = db.collection("users")
 
 
-def get_user_by_email(email: str) -> Optional[Dict[str, Any]]:
-    """Get user from Firestore by email"""
-    users = users_collection.where("email", "==", email).limit(1).get()
-    for user in users:
-        user_data = user.to_dict()
-        user_data["id"] = user.id
-        return user_data
-    return None
+def get_user_by_email(email: str):
+    """Get user by email from Firestore"""
+    try:
+        # Gunakan parameter keyword filter
+        users_ref = db.collection("users")
+        query = users_ref.where(filter=firestore.FieldFilter("email", "==", email))
+        docs = query.get()
+
+        for doc in docs:
+            return doc.to_dict()
+        return None
+    except Exception as e:
+        print(f"Error getting user: {e}")
+        return None
 
 
 def create_user(user_data: Dict[str, Any]) -> Dict[str, Any]:
