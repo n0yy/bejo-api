@@ -8,11 +8,11 @@ from typing import List
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-def check_superadmin(current_user: dict):
-    """Check if user is superadmin"""
-    if current_user["role"] != "superadmin":
+def check_superuser(current_user: dict):
+    """Check if user is superuser"""
+    if current_user["role"] != "superuser":
         raise HTTPException(
-            status_code=403, detail="Hanya superadmin yang dapat mengakses fitur ini"
+            status_code=403, detail="Hanya superuser yang dapat mengakses fitur ini"
         )
 
 
@@ -52,8 +52,8 @@ async def update_user(
     current_user: dict = Depends(get_current_user),
 ):
     """Update user data"""
-    # Check if user is superadmin
-    check_superadmin(current_user)
+    # Check if user is superuser
+    check_superuser(current_user)
 
     # Check if user exists
     doc = users_collection.document(user_id).get()
@@ -87,8 +87,8 @@ async def update_user(
 @router.delete("/{user_id}")
 async def delete_user(user_id: str, current_user: dict = Depends(get_current_user)):
     """Delete user"""
-    # Check if user is superadmin
-    check_superadmin(current_user)
+    # Check if user is superuser
+    check_superuser(current_user)
 
     # Check if user exists
     doc = users_collection.document(user_id).get()

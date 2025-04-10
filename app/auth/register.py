@@ -20,10 +20,9 @@ async def register(user: UserCreate):
     user_data = user.model_dump()
     user_data["password"] = hash_password(user_data["password"])
     user_data["created_at"] = datetime.now().isoformat()
-    user_data["status"] = (
-        "pending"  # Initial status | Waiting to approved by superadmin
-    )
+    user_data["status"] = "pending"  # Initial status | Waiting to approved by superuser
     user_data["role"] = "user"  # Initial role
+    user_data["level_knowledge"] = "low"  # Low | Medium | High | Ultra
 
     # Save to Firestore
     user_data = create_user(user_data)

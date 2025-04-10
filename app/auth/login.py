@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, Depends
-from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from pydantic import BaseModel, EmailStr
 from app.auth.models import Token
@@ -20,10 +19,12 @@ async def login(form_data: EmailPasswordRequestForm):
     """Login user"""
     # Try to get user from cache first
     user = get_user_from_cache(form_data.email)
-
+    print(user)
     # If not in cache, get from Firestore
     if not user:
         user = get_user_by_email(form_data.email)
+        print(f"id user: {user['id']}")
+
         if user:
             # Cache the user data
             set_user_in_cache(form_data.email, user)
@@ -54,4 +55,4 @@ async def login(form_data: EmailPasswordRequestForm):
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "id": user["id"]}
