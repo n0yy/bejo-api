@@ -7,6 +7,8 @@ from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from langchain.embeddings.cache import CacheBackedEmbeddings
+from langchain_community.storage import RedisStore
 from datetime import datetime
 import time
 import json
@@ -29,8 +31,16 @@ redis_client = redis.Redis(
     decode_responses=True,
 )
 
-# Initialize embeddings
-embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+# Initialize Redis store for embeddings cache
+redis_store = RedisStore(client=redis_client, namespace="embeddings_cache")
+
+# Initialize base embeddings
+base_embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+
+# Initialize cached embeddings with Redis backend
+embeddings = CacheBackedEmbeddings.from_bytes_store(
+    base_embeddings, redis_store, namespace="embeddings"
+)
 
 # Initialize Pinecone vector store
 vectorstore = PineconeVectorStore(
